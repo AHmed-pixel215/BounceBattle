@@ -28,6 +28,19 @@ let ballY = canvas.height / 2;
 let ballSpeedX = 6;
 let ballSpeedY = 5;
 
+// === AUDIO SETUP ===
+const piano = new Audio("piano_loop.mp3");
+piano.loop = true;
+
+const scoreSound = new Audio("score.wav");
+const winSound = new Audio("win.mp3");
+
+// Browser autoplay fix
+document.body.addEventListener("click", () => {
+  piano.play().catch(() => {});
+  piano.pause();
+}, { once: true });
+
 function drawPaddle(x, y) {
   ctx.fillStyle = "white";
   ctx.fillRect(x, y, paddleWidth, paddleHeight);
@@ -102,6 +115,7 @@ function updateGame() {
       ballSpeedX = -ballSpeedX;
     } else {
       player2Score++;
+      scoreSound.play();
       if (player2Score === 9) endGame(2);
       else resetBall(true);
     }
@@ -112,6 +126,7 @@ function updateGame() {
       ballSpeedX = -ballSpeedX;
     } else {
       player1Score++;
+      scoreSound.play();
       if (player1Score === 9) endGame(1);
       else resetBall(true);
     }
@@ -159,6 +174,8 @@ function endGame(winner) {
   pause = false;
   gameFinished = true;
   gameStarted = false;
+  piano.pause();
+  winSound.play();
   document.getElementById("winner").style.display = "block";
   document.getElementById("winner").innerHTML = `
     🎉 Congratulations!<br/>Player ${winner} Wins!<br/>
@@ -175,12 +192,11 @@ function goToMenu() {
   gameStarted = false;
   showingIntro = false;
   waitingToContinue = false;
-
+  piano.pause();
   document.getElementById("winner").style.display = "none";
   canvas.style.display = "none";
   document.getElementById("menu").style.display = "block";
 }
-
 
 function restartGame() {
   player1Score = 0;
@@ -191,6 +207,7 @@ function restartGame() {
   pause = false;
   gameFinished = false;
   gameStarted = true;
+  piano.play();
   resetBall(true);
   gameLoop();
 }
@@ -202,7 +219,10 @@ window.addEventListener("keydown", function (e) {
   if (e.key.toLowerCase() === "x") player1Down = true;
 
   if (e.code === "Space") {
-    if (showingIntro) showingIntro = false;
+    if (showingIntro) {
+      showingIntro = false;
+      piano.play();
+    }
     if (waitingToContinue) waitingToContinue = false;
   }
 
