@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bounce Battle</title>
+  <link rel="icon" type="image/png" href="logo.png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="menu">
+    <h1>Bounce Battle</h1>
+    <button onclick="startGame(1)">1 Player</button>
+    <button onclick="startGame(2)">2 Player</button>
+    <div id="controlOptions" style="display:none;">
+      <p>Choose Control for Player:</p>
+      <button onclick="setControl('arrow')">Arrow Keys</button>
+      <button onclick="setControl('sx')">S & X Keys</button>
+    </div>
+  </div>
+
+  <canvas id="gameCanvas" width="800" height="500"></canvas>
+  <div id="winner" style="display:none;"></div>
+
+  <script src="game.js"></script>
+</body>
+</html>
